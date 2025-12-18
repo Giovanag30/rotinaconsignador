@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Consignador - G30 AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #e5e5e5; }
+        .card { transition: all 0.3s ease; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5); border-color: #6366f1; }
+        .timeline-line { position: absolute; left: 24px; top: 0; bottom: 0; width: 2px; background-color: #404040; z-index: 0; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #171717; }
+        ::-webkit-scrollbar-thumb { background: #404040; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+
+        /* Modal Animation */
+        .modal { transition: opacity 0.25s ease; }
+        body.modal-active { overflow-x: hidden; overflow-y: hidden !important; }
+        
+        /* Input Focus Style */
+        input:focus { outline: none; border-color: #6366f1; ring: 2px; ring-color: #6366f1; }
+
+        /* Smooth fade-in */
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-gray-100 bg-neutral-950">
+
+    <!-- Sidebar & Mobile Header -->
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- Sidebar -->
+        <aside class="hidden md:flex flex-col w-64 bg-black border-r border-neutral-800 shadow-xl">
+            <div class="p-6 text-center border-b border-neutral-800 flex flex-col items-center justify-center">
+                <img src="https://raw.githubusercontent.com/Giovanag30/g30/8064860730a55365eaf57019917177446979d57b/g30.jpg" 
+                     alt="G30 AI Logo" 
+                     onerror="this.src='https://via.placeholder.com/150/000000/6366f1?text=G30+AI'"
+                     class="h-16 w-auto object-contain mb-2 hover:opacity-90 transition-opacity rounded-lg">
+                
+                <p class="text-xs text-neutral-500 mt-1 uppercase tracking-widest">Alta Performance</p>
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="#" onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-item flex items-center p-3 rounded-lg bg-indigo-600 text-white font-medium border border-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.3)]">
+                    <i class="fas fa-chart-line w-6"></i> Dashboard
+                </a>
+                <a href="#" onclick="switchTab('routine')" id="nav-routine" class="nav-item flex items-center p-3 rounded-lg hover:bg-neutral-800 text-neutral-400 transition hover:text-indigo-400">
+                    <i class="fas fa-clock w-6"></i> Rotina Diária
+                </a>
+                <a href="#" onclick="switchTab('metrics')" id="nav-metrics" class="nav-item flex items-center p-3 rounded-lg hover:bg-neutral-800 text-neutral-400 transition hover:text-indigo-400">
+                    <i class="fas fa-clipboard-list w-6"></i> Registro Diário
+                </a>
+            </nav>
+            <div class="p-4 border-t border-neutral-800 bg-neutral-900/50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-lg font-bold text-white shadow-lg border border-indigo-400">C</div>
+                    <div>
+                        <p class="text-sm font-semibold text-white">Consignador</p>
+                        <p class="text-xs text-indigo-400"><i class="fas fa-circle text-[8px] mr-1"></i>Online</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative bg-neutral-950">
+            
+            <!-- Mobile Toggle -->
+            <div class="md:hidden bg-black border-b border-neutral-800 text-white p-4 flex justify-between items-center">
+                <img src="https://raw.githubusercontent.com/Giovanag30/g30/8064860730a55365eaf57019917177446979d57b/g30.jpg" 
+                     onerror="this.src='https://via.placeholder.com/80/000000/6366f1?text=G30'"
+                     alt="G30 AI" class="h-10 w-auto rounded-md">
+                <button onclick="console.log('Menu Mobile')" class="text-white"><i class="fas fa-bars"></i></button>
+            </div>
+
+            <div class="p-6 md:p-8 max-w-7xl mx-auto w-full">
+                
+                <!-- SECTION: DASHBOARD -->
+                <div id="dashboard-section" class="space-y-6 animate-fade-in">
+                    <header class="flex justify-between items-end mb-6 border-b border-neutral-800 pb-4">
+                        <div>
+                            <h2 class="text-3xl font-bold text-white">Painel do Consignador</h2>
+                            <p class="text-neutral-400">Gestão de prospecção em tempo real.</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 text-sm font-medium px-4 py-2 rounded-full shadow-[0_0_10px_rgba(99,102,241,0.1)]">Meta: 100/33/5</span>
+                        </div>
+                    </header>
+
+                    <!-- KPI Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Calls -->
+                        <div class="card bg-neutral-900 p-6 rounded-xl border border-neutral-800 relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 rounded-full -mr-10 -mt-10 z-0 transition-transform group-hover:scale-150 duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-neutral-400 font-medium text-sm uppercase tracking-wider">Ligações Realizadas</h3>
+                                    <i class="fas fa-phone-alt text-indigo-400 bg-indigo-500/10 p-2 rounded-lg border border-indigo-500/20"></i>
+                                </div>
+                                <div class="flex items-end gap-2">
+                                    <span id="display-calls" class="text-4xl font-bold text-white">0</span>
+                                    <span class="text-sm text-neutral-500 mb-1 font-mono">/ 100 Meta</span>
+                                </div>
+                                <div class="w-full bg-neutral-800 rounded-full h-2 mt-4 overflow-hidden">
+                                    <div id="bar-calls" class="bg-gradient-to-r from-indigo-600 to-indigo-400 h-2 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contacts -->
+                        <div class="card bg-neutral-900 p-6 rounded-xl border border-neutral-800 relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 rounded-full -mr-10 -mt-10 z-0 transition-transform group-hover:scale-150 duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-neutral-400 font-medium text-sm uppercase tracking-wider">Conversas (Atendidos)</h3>
+                                    <i class="fas fa-headset text-cyan-400 bg-cyan-500/10 p-2 rounded-lg border border-cyan-500/20"></i>
+                                </div>
+                                <div class="flex items-end gap-2">
+                                    <span id="display-contacts" class="text-4xl font-bold text-white">0</span>
+                                    <span class="text-sm text-neutral-500 mb-1 font-mono">/ 33 Meta</span>
+                                </div>
+                                <div class="w-full bg-neutral-800 rounded-full h-2 mt-4 overflow-hidden">
+                                    <div id="bar-contacts" class="bg-gradient-to-r from-indigo-500 to-cyan-400 h-2 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(34,211,238,0.5)]" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Scheduled -->
+                        <div class="card bg-neutral-900 p-6 rounded-xl border border-neutral-800 relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full -mr-10 -mt-10 z-0 transition-transform group-hover:scale-150 duration-500"></div>
+                            <div class="relative z-10">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-neutral-400 font-medium text-sm uppercase tracking-wider">Agendamentos</h3>
+                                    <i class="fas fa-calendar-check text-indigo-300 bg-indigo-500/10 p-2 rounded-lg border border-indigo-500/20"></i>
+                                </div>
+                                <div class="flex items-end gap-2">
+                                    <span id="display-scheduled" class="text-4xl font-bold text-white">0</span>
+                                    <span class="text-sm text-neutral-500 mb-1 font-mono">/ 5 Meta</span>
+                                </div>
+                                <div class="w-full bg-neutral-800 rounded-full h-2 mt-4 overflow-hidden">
+                                    <div id="bar-scheduled" class="bg-gradient-to-r from-cyan-400 to-indigo-400 h-2 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Inputs -->
+                        <div class="lg:col-span-1 bg-neutral-900 p-6 rounded-xl border border-neutral-800 shadow-lg">
+                            <h3 class="text-lg font-bold text-white mb-4 border-b border-neutral-800 pb-2"><i class="fas fa-pen mr-2 text-indigo-400"></i>Atualizar Números</h3>
+                            <form id="kpi-form" class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wide mb-1">Ligações Realizadas</label>
+                                    <input type="number" id="input-calls" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors placeholder-neutral-700" placeholder="0" oninput="updateDashboard()">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wide mb-1">Conversas (Atendidos)</label>
+                                    <input type="number" id="input-contacts" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors placeholder-neutral-700" placeholder="0" oninput="updateDashboard()">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wide mb-1">Agendamentos Feitos</label>
+                                    <input type="number" id="input-scheduled" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors placeholder-neutral-700" placeholder="0" oninput="updateDashboard()">
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Analysis -->
+                        <div class="lg:col-span-2 bg-neutral-900 p-6 rounded-xl border border-neutral-800 shadow-lg">
+                            <h3 class="text-lg font-bold text-white mb-4 border-b border-neutral-800 pb-2"><i class="fas fa-chart-pie mr-2 text-indigo-400"></i>Análise de Conversão</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="h-48 relative">
+                                    <canvas id="conversionChart"></canvas>
+                                </div>
+                                <div class="space-y-4 flex flex-col justify-center">
+                                    <div class="bg-neutral-950 p-3 rounded-lg border border-neutral-800 hover:border-indigo-500/30 transition-colors">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-sm font-medium text-neutral-400">Ligações ➔ Atendidos</span>
+                                            <span id="rate-contact" class="text-lg font-bold text-indigo-400">0%</span>
+                                        </div>
+                                        <div class="w-full bg-neutral-800 rounded-full h-1.5 mt-2 overflow-hidden">
+                                            <div id="prog-contact" class="bg-indigo-600 h-1.5 rounded-full" style="width: 0%"></div>
+                                        </div>
+                                        <p class="text-[10px] text-neutral-500 mt-1 uppercase">Meta Ideal: 33%</p>
+                                    </div>
+                                    <div class="bg-neutral-950 p-3 rounded-lg border border-neutral-800 hover:border-cyan-500/30 transition-colors">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-sm font-medium text-neutral-400">Atendidos ➔ Agendamentos</span>
+                                            <span id="rate-schedule" class="text-lg font-bold text-cyan-400">0%</span>
+                                        </div>
+                                        <div class="w-full bg-neutral-800 rounded-full h-1.5 mt-2 overflow-hidden">
+                                            <div id="prog-schedule" class="bg-cyan-500 h-1.5 rounded-full" style="width: 0%"></div>
+                                        </div>
+                                        <p class="text-[10px] text-neutral-500 mt-1 uppercase">Ref. Alta Performance: 45%</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION: ROUTINE (Hidden by default) -->
+                <div id="routine-section" class="hidden space-y-6 animate-fade-in">
+                    <header class="border-b border-neutral-800 pb-4 mb-6">
+                        <h2 class="text-3xl font-bold text-white">Sugestão de Rotina</h2>
+                        <p class="text-neutral-400">Cronograma de prospecção diária.</p>
+                    </header>
+                    <div class="bg-neutral-900 p-8 rounded-xl border border-neutral-800 relative shadow-lg">
+                        <div class="timeline-line ml-3 md:ml-0 md:left-8 bg-neutral-700"></div>
+                        <div class="space-y-6 relative z-10">
+                            <!-- Template Item -->
+                            <div class="flex flex-col md:flex-row gap-4 group">
+                                <div class="flex items-center gap-4 md:w-48 flex-shrink-0">
+                                    <div class="w-4 h-4 rounded-full bg-indigo-500 border-4 border-neutral-900 shadow-[0_0_10px_rgba(99,102,241,0.8)] ml-1 md:ml-6 z-10"></div>
+                                    <span class="font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-md text-sm">09:00 - 10:00</span>
+                                </div>
+                                <div class="bg-neutral-950 p-4 rounded-lg border border-neutral-800 flex-1 hover:border-indigo-500 transition hover:shadow-[0_0_15px_rgba(99,102,241,0.1)]">
+                                    <h4 class="font-bold text-white">Confirmar Agendamentos</h4>
+                                    <p class="text-sm text-neutral-400">Validar visitas do dia para garantir taxa de comparecimento.</p>
+                                </div>
+                            </div>
+                            <!-- ... Outros itens seguem a mesma lógica ... -->
+                            <div class="flex flex-col md:flex-row gap-4 group">
+                                <div class="flex items-center gap-4 md:w-48 flex-shrink-0">
+                                    <div class="w-4 h-4 rounded-full bg-cyan-500 border-4 border-neutral-900 ml-1 md:ml-6 z-10"></div>
+                                    <span class="font-bold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-3 py-1 rounded-md text-sm">10:00 - 12:00</span>
+                                </div>
+                                <div class="bg-neutral-950 p-4 rounded-lg border border-neutral-800 flex-1 hover:border-cyan-500 transition">
+                                    <h4 class="font-bold text-white">Prospecção Ativa</h4>
+                                    <p class="text-sm text-neutral-400">Bloco focado em novos contratos de consignação.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION: METRICS -->
+                <div id="metrics-section" class="hidden space-y-6 animate-fade-in">
+                    <header class="border-b border-neutral-800 pb-4 mb-6">
+                        <h2 class="text-3xl font-bold text-white">Registro Diário</h2>
+                        <p class="text-neutral-400">Finalização do dia de trabalho.</p>
+                    </header>
+                    <form class="bg-neutral-900 p-8 rounded-xl border border-neutral-800 grid grid-cols-1 md:grid-cols-2 gap-6 shadow-lg">
+                        <div class="space-y-4">
+                            <h3 class="font-bold text-indigo-400 border-b border-neutral-700 pb-2 uppercase text-sm tracking-wide">Fase de Contacto</h3>
+                            <div>
+                                <label class="block text-xs font-medium text-neutral-400 mb-1">Leads Totais</label>
+                                <input id="report-leads" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500" placeholder="0">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-neutral-400 mb-1">Ligações</label>
+                                <input id="report-calls" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500" placeholder="0">
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <h3 class="font-bold text-cyan-400 border-b border-neutral-700 pb-2 uppercase text-sm tracking-wide">Fase de Fechamento</h3>
+                            <div>
+                                <label class="block text-xs font-medium text-neutral-400 mb-1">Agendamentos</label>
+                                <input id="report-scheduled-visit" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-cyan-500" placeholder="0">
+                            </div>
+                             <div class="bg-indigo-900/20 p-3 rounded-md border border-indigo-900/40">
+                                <label class="block text-xs font-bold text-indigo-400 mb-1 uppercase">Contratos Consignados</label>
+                                <input id="report-sales" type="number" class="w-full bg-neutral-950 border border-indigo-800 rounded-lg p-2.5 text-white focus:border-indigo-500" placeholder="0">
+                            </div>
+                        </div>
+                        <div class="md:col-span-2 pt-4">
+                            <button type="button" onclick="generateReport()" class="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 text-white font-bold py-3 rounded-lg hover:from-indigo-500 transition shadow-lg shadow-indigo-900/50 flex items-center justify-center gap-2">
+                                <i class="fas fa-file-alt"></i> Gerar Relatório de Consignação
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL -->
+    <div id="report-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 opacity-0 transition-opacity duration-300 backdrop-blur-sm">
+        <div class="bg-neutral-900 rounded-xl border border-neutral-800 shadow-2xl p-6 w-full max-w-lg mx-4 transform transition-transform duration-300 scale-95">
+            <h3 class="text-xl font-bold text-white mb-4">Relatório Diário</h3>
+            <textarea id="report-content" class="w-full h-64 p-4 bg-neutral-950 border border-neutral-800 rounded-lg font-mono text-sm mb-4 text-neutral-300" readonly></textarea>
+            <div class="flex gap-3">
+                <button onclick="closeReportModal()" class="flex-1 px-4 py-2 border border-neutral-700 text-neutral-400 rounded-lg hover:bg-neutral-800">Fechar</button>
+                <button onclick="copyReport()" class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 font-bold shadow-lg shadow-indigo-500/20">Copiar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            ['dashboard', 'routine', 'metrics'].forEach(id => {
+                document.getElementById(id + '-section').classList.add('hidden');
+                document.getElementById('nav-' + id).classList.remove('bg-indigo-600', 'text-white', 'border', 'border-indigo-500', 'shadow-[0_0_15px_rgba(99,102,241,0.3)]');
+                document.getElementById('nav-' + id).classList.add('hover:bg-neutral-800', 'text-neutral-400');
+            });
+            document.getElementById(tabId + '-section').classList.remove('hidden');
+            const activeBtn = document.getElementById('nav-' + tabId);
+            activeBtn.classList.remove('hover:bg-neutral-800', 'text-neutral-400');
+            activeBtn.classList.add('bg-indigo-600', 'text-white', 'border', 'border-indigo-500', 'shadow-[0_0_15px_rgba(99,102,241,0.3)]');
+        }
+
+        const GOALS = { calls: 100, contacts: 33, scheduled: 5 };
+        Chart.defaults.color = '#a3a3a3';
+        Chart.defaults.borderColor = '#404040';
+
+        let conversionChartCtx = document.getElementById('conversionChart').getContext('2d');
+        let conversionChart = new Chart(conversionChartCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Ligação -> Atendido', 'Atendido -> Agenda'],
+                datasets: [{
+                    label: 'Taxa Atual (%)',
+                    data: [0, 0],
+                    backgroundColor: ['#6366f1', '#22d3ee'],
+                    borderRadius: 4
+                }, {
+                    label: 'Meta/Ref (%)',
+                    data: [33, 45],
+                    type: 'line',
+                    borderColor: '#a3a3a3',
+                    borderDash: [5, 5],
+                    pointRadius: 4,
+                    borderWidth: 2
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
+        });
+
+        function updateDashboard() {
+            const calls = parseInt(document.getElementById('input-calls').value) || 0;
+            const contacts = parseInt(document.getElementById('input-contacts').value) || 0;
+            const scheduled = parseInt(document.getElementById('input-scheduled').value) || 0;
+
+            document.getElementById('display-calls').innerText = calls;
+            document.getElementById('display-contacts').innerText = contacts;
+            document.getElementById('display-scheduled').innerText = scheduled;
+
+            document.getElementById('bar-calls').style.width = Math.min((calls / GOALS.calls) * 100, 100) + '%';
+            document.getElementById('bar-contacts').style.width = Math.min((contacts / GOALS.contacts) * 100, 100) + '%';
+            document.getElementById('bar-scheduled').style.width = Math.min((scheduled / GOALS.scheduled) * 100, 100) + '%';
+
+            let rateContact = calls > 0 ? ((contacts / calls) * 100).toFixed(1) : 0;
+            let rateSchedule = contacts > 0 ? ((scheduled / contacts) * 100).toFixed(1) : 0;
+
+            document.getElementById('rate-contact').innerText = rateContact + '%';
+            document.getElementById('rate-schedule').innerText = rateSchedule + '%';
+            document.getElementById('prog-contact').style.width = Math.min(rateContact, 100) + '%';
+            document.getElementById('prog-schedule').style.width = Math.min(rateSchedule, 100) + '%';
+
+            conversionChart.data.datasets[0].data = [rateContact, rateSchedule];
+            conversionChart.update();
+        }
+
+        function generateReport() {
+            const today = new Date().toLocaleDateString('pt-BR');
+            const leads = document.getElementById('report-leads').value || '0';
+            const calls = document.getElementById('report-calls').value || '0';
+            const contacts = document.getElementById('report-contacts').value || '0';
+            const schedVisit = document.getElementById('report-scheduled-visit').value || '0';
+            const sales = document.getElementById('report-sales').value || '0';
+
+            const reportText = `🔹 *RELATÓRIO DE CONSIGNAÇÃO - G30 AI*
+📅 Data: ${today}
+
+*ATIVIDADE*
+• Leads: ${leads}
+• Ligações: ${calls}
+• Contatos: ${contacts}
+
+*RESULTADOS*
+• Agendamentos: ${schedVisit}
+🏆 *CONTRATOS FECHADOS:* ${sales}
+
+--------------------------------
+_Gerado via Painel do Consignador_`;
+
+            const modal = document.getElementById('report-modal');
+            document.getElementById('report-content').value = reportText;
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.querySelector('div').classList.remove('scale-95');
+                modal.querySelector('div').classList.add('scale-100');
+            }, 10);
+            document.body.classList.add('modal-active');
+        }
+
+        function closeReportModal() {
+            const modal = document.getElementById('report-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.classList.remove('modal-active');
+            }, 300);
+        }
+
+        function copyReport() {
+            const content = document.getElementById('report-content');
+            content.select();
+            document.execCommand('copy');
+            const btn = event.currentTarget;
+            btn.innerText = 'Copiado!';
+            setTimeout(() => btn.innerText = 'Copiar', 2000);
+        }
+
+        window.onload = updateDashboard;
+    </script>
+</body>
+</html>
