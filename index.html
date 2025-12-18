@@ -231,7 +231,6 @@
                                     <p class="text-sm text-neutral-400">Validar visitas do dia para garantir taxa de comparecimento.</p>
                                 </div>
                             </div>
-                            <!-- ... Outros itens seguem a mesma lógica ... -->
                             <div class="flex flex-col md:flex-row gap-4 group">
                                 <div class="flex items-center gap-4 md:w-48 flex-shrink-0">
                                     <div class="w-4 h-4 rounded-full bg-cyan-500 border-4 border-neutral-900 ml-1 md:ml-6 z-10"></div>
@@ -252,7 +251,7 @@
                         <h2 class="text-3xl font-bold text-white">Registro Diário</h2>
                         <p class="text-neutral-400">Finalização do dia de trabalho.</p>
                     </header>
-                    <form class="bg-neutral-900 p-8 rounded-xl border border-neutral-800 grid grid-cols-1 md:grid-cols-2 gap-6 shadow-lg">
+                    <form id="metrics-form" class="bg-neutral-900 p-8 rounded-xl border border-neutral-800 grid grid-cols-1 md:grid-cols-2 gap-6 shadow-lg">
                         <div class="space-y-4">
                             <h3 class="font-bold text-indigo-400 border-b border-neutral-700 pb-2 uppercase text-sm tracking-wide">Fase de Contacto</h3>
                             <div>
@@ -260,14 +259,18 @@
                                 <input id="report-leads" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500" placeholder="0">
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-neutral-400 mb-1">Ligações</label>
+                                <label class="block text-xs font-medium text-neutral-400 mb-1">Ligações Realizadas</label>
                                 <input id="report-calls" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500" placeholder="0">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-neutral-400 mb-1">Contatos (Atendidos)</label>
+                                <input id="report-contacts" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500" placeholder="0">
                             </div>
                         </div>
                         <div class="space-y-4">
                             <h3 class="font-bold text-cyan-400 border-b border-neutral-700 pb-2 uppercase text-sm tracking-wide">Fase de Fechamento</h3>
                             <div>
-                                <label class="block text-xs font-medium text-neutral-400 mb-1">Agendamentos</label>
+                                <label class="block text-xs font-medium text-neutral-400 mb-1">Agendamentos Feitos</label>
                                 <input id="report-scheduled-visit" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-cyan-500" placeholder="0">
                             </div>
                              <div class="bg-indigo-900/20 p-3 rounded-md border border-indigo-900/40">
@@ -289,11 +292,11 @@
     <!-- MODAL -->
     <div id="report-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 opacity-0 transition-opacity duration-300 backdrop-blur-sm">
         <div class="bg-neutral-900 rounded-xl border border-neutral-800 shadow-2xl p-6 w-full max-w-lg mx-4 transform transition-transform duration-300 scale-95">
-            <h3 class="text-xl font-bold text-white mb-4">Relatório Diário</h3>
-            <textarea id="report-content" class="w-full h-64 p-4 bg-neutral-950 border border-neutral-800 rounded-lg font-mono text-sm mb-4 text-neutral-300" readonly></textarea>
+            <h3 class="text-xl font-bold text-white mb-4">Relatório Diário Gerado</h3>
+            <textarea id="report-content" class="w-full h-64 p-4 bg-neutral-950 border border-neutral-800 rounded-lg font-mono text-sm mb-4 text-neutral-300 focus:outline-none focus:border-indigo-500" readonly></textarea>
             <div class="flex gap-3">
-                <button onclick="closeReportModal()" class="flex-1 px-4 py-2 border border-neutral-700 text-neutral-400 rounded-lg hover:bg-neutral-800">Fechar</button>
-                <button onclick="copyReport()" class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 font-bold shadow-lg shadow-indigo-500/20">Copiar</button>
+                <button onclick="closeReportModal()" class="flex-1 px-4 py-2 border border-neutral-700 text-neutral-400 rounded-lg hover:bg-neutral-800 transition">Fechar</button>
+                <button id="copy-btn" onclick="copyReport()" class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 font-bold shadow-lg shadow-indigo-500/20 transition">Copiar Relatório</button>
             </div>
         </div>
     </div>
@@ -371,23 +374,31 @@
             const schedVisit = document.getElementById('report-scheduled-visit').value || '0';
             const sales = document.getElementById('report-sales').value || '0';
 
+            // Cálculo de Eficiência
+            let efficiency = "0%";
+            if (parseInt(calls) > 0) {
+                efficiency = ((parseInt(contacts) / parseInt(calls)) * 100).toFixed(1) + "%";
+            }
+
             const reportText = `🔹 *RELATÓRIO DE CONSIGNAÇÃO - G30 AI*
 📅 Data: ${today}
 
-*ATIVIDADE*
-• Leads: ${leads}
-• Ligações: ${calls}
-• Contatos: ${contacts}
+*ATIVIDADE DE PROSPECÇÃO*
+• Leads na Base: ${leads}
+• Ligações Efetuadas: ${calls}
+• Contatos Efetivos (Atendidos): ${contacts}
+• Taxa de Contato: ${efficiency}
 
-*RESULTADOS*
-• Agendamentos: ${schedVisit}
-🏆 *CONTRATOS FECHADOS:* ${sales}
+*RESULTADOS DE HOJE*
+• Agendamentos Realizados: ${schedVisit}
+🏆 *CONTRATOS CONSIGNADOS:* ${sales}
 
 --------------------------------
-_Gerado via Painel do Consignador_`;
+_Gerado via Painel do Consignador G30_`;
 
             const modal = document.getElementById('report-modal');
             document.getElementById('report-content').value = reportText;
+            
             modal.classList.remove('hidden');
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
@@ -400,19 +411,32 @@ _Gerado via Painel do Consignador_`;
         function closeReportModal() {
             const modal = document.getElementById('report-modal');
             modal.classList.add('opacity-0');
+            modal.querySelector('div').classList.add('scale-95');
             setTimeout(() => {
                 modal.classList.add('hidden');
                 document.body.classList.remove('modal-active');
+                // Reset button text
+                document.getElementById('copy-btn').innerText = 'Copiar Relatório';
             }, 300);
         }
 
         function copyReport() {
             const content = document.getElementById('report-content');
             content.select();
-            document.execCommand('copy');
-            const btn = event.currentTarget;
-            btn.innerText = 'Copiado!';
-            setTimeout(() => btn.innerText = 'Copiar', 2000);
+            content.setSelectionRange(0, 99999); // Mobile
+            
+            try {
+                document.execCommand('copy');
+                const btn = document.getElementById('copy-btn');
+                btn.innerText = 'Copiado para o Clip!';
+                btn.classList.add('bg-green-600');
+                setTimeout(() => {
+                    btn.innerText = 'Copiar Relatório';
+                    btn.classList.remove('bg-green-600');
+                }, 2000);
+            } catch (err) {
+                console.error('Erro ao copiar');
+            }
         }
 
         window.onload = updateDashboard;
