@@ -39,7 +39,6 @@
 </head>
 <body class="text-gray-100 bg-neutral-950">
 
-    <!-- Sidebar & Mobile Header -->
     <div class="flex h-screen overflow-hidden">
         
         <!-- Sidebar -->
@@ -49,7 +48,6 @@
                      alt="G30 AI Logo" 
                      onerror="this.src='https://via.placeholder.com/150/000000/6366f1?text=G30+AI'"
                      class="h-16 w-auto object-contain mb-2 hover:opacity-90 transition-opacity rounded-lg">
-                
                 <p class="text-xs text-neutral-500 mt-1 uppercase tracking-widest">Alta Performance</p>
             </div>
             <nav class="flex-1 p-4 space-y-2">
@@ -77,7 +75,6 @@
         <!-- Main Content -->
         <main class="flex-1 flex flex-col overflow-y-auto overflow-x-hidden relative bg-neutral-950">
             
-            <!-- Mobile Toggle -->
             <div class="md:hidden bg-black border-b border-neutral-800 text-white p-4 flex justify-between items-center">
                 <img src="https://raw.githubusercontent.com/Giovanag30/g30/8064860730a55365eaf57019917177446979d57b/g30.jpg" 
                      onerror="this.src='https://via.placeholder.com/80/000000/6366f1?text=G30'"
@@ -87,70 +84,83 @@
 
             <div class="p-6 md:p-8 max-w-7xl mx-auto w-full">
                 
-                <!-- SECTION: DASHBOARD -->
                 <div id="dashboard-section" class="space-y-6 animate-fade-in">
                     <header class="flex justify-between items-end mb-6 border-b border-neutral-800 pb-4">
                         <div>
                             <h2 class="text-3xl font-bold text-white">Painel do Consignador</h2>
-                            <p class="text-neutral-400">Gestão de prospecção em tempo real.</p>
+                            <p class="text-neutral-400">Metas e Performance de Consignação.</p>
                         </div>
                         <div class="text-right">
-                            <span class="bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 text-sm font-medium px-4 py-2 rounded-full shadow-[0_0_10px_rgba(99,102,241,0.1)]">Meta: 100/33/5</span>
+                            <span class="bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 text-sm font-medium px-4 py-2 rounded-full shadow-[0_0_10px_rgba(99,102,241,0.1)]">Meta: 100/33/10/5</span>
                         </div>
                     </header>
 
                     <!-- KPI Cards -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <!-- Calls -->
-                        <div class="card bg-neutral-900 p-6 rounded-xl border border-neutral-800 relative overflow-hidden group">
-                            <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 rounded-full -mr-10 -mt-10 z-0 transition-transform group-hover:scale-150 duration-500"></div>
+                        <div class="card bg-neutral-900 p-5 rounded-xl border border-neutral-800 relative overflow-hidden group">
                             <div class="relative z-10">
-                                <div class="flex justify-between items-center mb-4">
-                                    <h3 class="text-neutral-400 font-medium text-sm uppercase tracking-wider">Ligações Realizadas</h3>
-                                    <i class="fas fa-phone-alt text-indigo-400 bg-indigo-500/10 p-2 rounded-lg border border-indigo-500/20"></i>
+                                <div class="flex justify-between items-center mb-3">
+                                    <h3 class="text-neutral-400 font-medium text-xs uppercase tracking-wider">Ligações</h3>
+                                    <i class="fas fa-phone-alt text-indigo-400 text-sm"></i>
                                 </div>
-                                <div class="flex items-end gap-2">
-                                    <span id="display-calls" class="text-4xl font-bold text-white">0</span>
-                                    <span class="text-sm text-neutral-500 mb-1 font-mono">/ 100 Meta</span>
+                                <div class="flex items-end gap-1">
+                                    <span id="display-calls" class="text-3xl font-bold text-white">0</span>
+                                    <span class="text-xs text-neutral-500 mb-1">/ 100</span>
                                 </div>
-                                <div class="w-full bg-neutral-800 rounded-full h-2 mt-4 overflow-hidden">
-                                    <div id="bar-calls" class="bg-gradient-to-r from-indigo-600 to-indigo-400 h-2 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]" style="width: 0%"></div>
+                                <div class="w-full bg-neutral-800 rounded-full h-1.5 mt-3 overflow-hidden">
+                                    <div id="bar-calls" class="bg-indigo-500 h-full transition-all duration-500" style="width: 0%"></div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Contacts -->
-                        <div class="card bg-neutral-900 p-6 rounded-xl border border-neutral-800 relative overflow-hidden group">
-                            <div class="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 rounded-full -mr-10 -mt-10 z-0 transition-transform group-hover:scale-150 duration-500"></div>
+                        <div class="card bg-neutral-900 p-5 rounded-xl border border-neutral-800 relative overflow-hidden group">
                             <div class="relative z-10">
-                                <div class="flex justify-between items-center mb-4">
-                                    <h3 class="text-neutral-400 font-medium text-sm uppercase tracking-wider">Conversas (Atendidos)</h3>
-                                    <i class="fas fa-headset text-cyan-400 bg-cyan-500/10 p-2 rounded-lg border border-cyan-500/20"></i>
+                                <div class="flex justify-between items-center mb-3">
+                                    <h3 class="text-neutral-400 font-medium text-xs uppercase tracking-wider">Conversas</h3>
+                                    <i class="fas fa-headset text-cyan-400 text-sm"></i>
                                 </div>
-                                <div class="flex items-end gap-2">
-                                    <span id="display-contacts" class="text-4xl font-bold text-white">0</span>
-                                    <span class="text-sm text-neutral-500 mb-1 font-mono">/ 33 Meta</span>
+                                <div class="flex items-end gap-1">
+                                    <span id="display-contacts" class="text-3xl font-bold text-white">0</span>
+                                    <span class="text-xs text-neutral-500 mb-1">/ 33</span>
                                 </div>
-                                <div class="w-full bg-neutral-800 rounded-full h-2 mt-4 overflow-hidden">
-                                    <div id="bar-contacts" class="bg-gradient-to-r from-indigo-500 to-cyan-400 h-2 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(34,211,238,0.5)]" style="width: 0%"></div>
+                                <div class="w-full bg-neutral-800 rounded-full h-1.5 mt-3 overflow-hidden">
+                                    <div id="bar-contacts" class="bg-cyan-500 h-full transition-all duration-500" style="width: 0%"></div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Scheduled -->
-                        <div class="card bg-neutral-900 p-6 rounded-xl border border-neutral-800 relative overflow-hidden group">
-                            <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full -mr-10 -mt-10 z-0 transition-transform group-hover:scale-150 duration-500"></div>
+                        <div class="card bg-neutral-900 p-5 rounded-xl border border-neutral-800 relative overflow-hidden group">
                             <div class="relative z-10">
-                                <div class="flex justify-between items-center mb-4">
-                                    <h3 class="text-neutral-400 font-medium text-sm uppercase tracking-wider">Agendamentos</h3>
-                                    <i class="fas fa-calendar-check text-indigo-300 bg-indigo-500/10 p-2 rounded-lg border border-indigo-500/20"></i>
+                                <div class="flex justify-between items-center mb-3">
+                                    <h3 class="text-neutral-400 font-medium text-xs uppercase tracking-wider">Agendados</h3>
+                                    <i class="fas fa-calendar-alt text-indigo-300 text-sm"></i>
                                 </div>
-                                <div class="flex items-end gap-2">
-                                    <span id="display-scheduled" class="text-4xl font-bold text-white">0</span>
-                                    <span class="text-sm text-neutral-500 mb-1 font-mono">/ 5 Meta</span>
+                                <div class="flex items-end gap-1">
+                                    <span id="display-scheduled" class="text-3xl font-bold text-white">0</span>
+                                    <span class="text-xs text-neutral-500 mb-1">/ 10</span>
                                 </div>
-                                <div class="w-full bg-neutral-800 rounded-full h-2 mt-4 overflow-hidden">
-                                    <div id="bar-scheduled" class="bg-gradient-to-r from-cyan-400 to-indigo-400 h-2 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]" style="width: 0%"></div>
+                                <div class="w-full bg-neutral-800 rounded-full h-1.5 mt-3 overflow-hidden">
+                                    <div id="bar-scheduled" class="bg-indigo-300 h-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visits -->
+                        <div class="card bg-neutral-900 p-5 rounded-xl border border-neutral-800 relative overflow-hidden group">
+                            <div class="relative z-10">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h3 class="text-neutral-400 font-medium text-xs uppercase tracking-wider">Visitas</h3>
+                                    <i class="fas fa-car text-emerald-400 text-sm"></i>
+                                </div>
+                                <div class="flex items-end gap-1">
+                                    <span id="display-visits" class="text-3xl font-bold text-white">0</span>
+                                    <span class="text-xs text-neutral-500 mb-1">/ 5 Meta</span>
+                                </div>
+                                <div class="w-full bg-neutral-800 rounded-full h-1.5 mt-3 overflow-hidden">
+                                    <div id="bar-visits" class="bg-emerald-500 h-full transition-all duration-500" style="width: 0%"></div>
                                 </div>
                             </div>
                         </div>
@@ -159,51 +169,55 @@
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <!-- Inputs -->
                         <div class="lg:col-span-1 bg-neutral-900 p-6 rounded-xl border border-neutral-800 shadow-lg">
-                            <h3 class="text-lg font-bold text-white mb-4 border-b border-neutral-800 pb-2"><i class="fas fa-pen mr-2 text-indigo-400"></i>Atualizar Números</h3>
-                            <form id="kpi-form" class="space-y-4">
+                            <h3 class="text-lg font-bold text-white mb-4 border-b border-neutral-800 pb-2">Atualizar Números</h3>
+                            <form class="space-y-4">
                                 <div>
-                                    <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wide mb-1">Ligações Realizadas</label>
-                                    <input type="number" id="input-calls" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors placeholder-neutral-700" placeholder="0" oninput="updateDashboard()">
+                                    <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wide mb-1">Ligações</label>
+                                    <input type="number" id="input-calls" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500" placeholder="0" oninput="updateDashboard()">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wide mb-1">Conversas (Atendidos)</label>
-                                    <input type="number" id="input-contacts" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors placeholder-neutral-700" placeholder="0" oninput="updateDashboard()">
+                                    <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wide mb-1">Conversas</label>
+                                    <input type="number" id="input-contacts" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500" placeholder="0" oninput="updateDashboard()">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wide mb-1">Agendamentos Feitos</label>
-                                    <input type="number" id="input-scheduled" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors placeholder-neutral-700" placeholder="0" oninput="updateDashboard()">
+                                    <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wide mb-1">Agendamentos</label>
+                                    <input type="number" id="input-scheduled" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500" placeholder="0" oninput="updateDashboard()">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-neutral-400 uppercase tracking-wide mb-1">Visitas Realizadas</label>
+                                    <input type="number" id="input-visits" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500" placeholder="0" oninput="updateDashboard()">
                                 </div>
                             </form>
                         </div>
 
-                        <!-- Analysis -->
+                        <!-- Conversion Analysis -->
                         <div class="lg:col-span-2 bg-neutral-900 p-6 rounded-xl border border-neutral-800 shadow-lg">
-                            <h3 class="text-lg font-bold text-white mb-4 border-b border-neutral-800 pb-2"><i class="fas fa-chart-pie mr-2 text-indigo-400"></i>Análise de Conversão</h3>
-                            
+                            <h3 class="text-lg font-bold text-white mb-4 border-b border-neutral-800 pb-2">Funil de Conversão</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="h-48 relative">
+                                <div class="h-56">
                                     <canvas id="conversionChart"></canvas>
                                 </div>
-                                <div class="space-y-4 flex flex-col justify-center">
-                                    <div class="bg-neutral-950 p-3 rounded-lg border border-neutral-800 hover:border-indigo-500/30 transition-colors">
+                                <div class="space-y-3 flex flex-col justify-center">
+                                    <div class="bg-neutral-950 p-3 rounded-lg border border-neutral-800">
                                         <div class="flex justify-between items-center">
-                                            <span class="text-sm font-medium text-neutral-400">Ligações ➔ Atendidos</span>
-                                            <span id="rate-contact" class="text-lg font-bold text-indigo-400">0%</span>
+                                            <span class="text-xs text-neutral-400">Ligação ➔ Contato</span>
+                                            <span id="rate-contact" class="text-sm font-bold text-indigo-400">0%</span>
                                         </div>
-                                        <div class="w-full bg-neutral-800 rounded-full h-1.5 mt-2 overflow-hidden">
-                                            <div id="prog-contact" class="bg-indigo-600 h-1.5 rounded-full" style="width: 0%"></div>
-                                        </div>
-                                        <p class="text-[10px] text-neutral-500 mt-1 uppercase">Meta Ideal: 33%</p>
+                                        <p class="text-[10px] text-neutral-500 uppercase mt-1">Ref: 33%</p>
                                     </div>
-                                    <div class="bg-neutral-950 p-3 rounded-lg border border-neutral-800 hover:border-cyan-500/30 transition-colors">
+                                    <div class="bg-neutral-950 p-3 rounded-lg border border-neutral-800">
                                         <div class="flex justify-between items-center">
-                                            <span class="text-sm font-medium text-neutral-400">Atendidos ➔ Agendamentos</span>
-                                            <span id="rate-schedule" class="text-lg font-bold text-cyan-400">0%</span>
+                                            <span class="text-xs text-neutral-400">Contato ➔ Agendamento</span>
+                                            <span id="rate-schedule" class="text-sm font-bold text-cyan-400">0%</span>
                                         </div>
-                                        <div class="w-full bg-neutral-800 rounded-full h-1.5 mt-2 overflow-hidden">
-                                            <div id="prog-schedule" class="bg-cyan-500 h-1.5 rounded-full" style="width: 0%"></div>
+                                        <p class="text-[10px] text-neutral-500 uppercase mt-1">Ref: 30%</p>
+                                    </div>
+                                    <div class="bg-neutral-950 p-3 rounded-lg border border-neutral-800">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs text-neutral-400">Agendamento ➔ Visita</span>
+                                            <span id="rate-visit" class="text-sm font-bold text-emerald-400">0%</span>
                                         </div>
-                                        <p class="text-[10px] text-neutral-500 mt-1 uppercase">Ref. Alta Performance: 45%</p>
+                                        <p class="text-[10px] text-neutral-500 uppercase mt-1">Ref: 50%</p>
                                     </div>
                                 </div>
                             </div>
@@ -211,76 +225,79 @@
                     </div>
                 </div>
 
-                <!-- SECTION: ROUTINE (Hidden by default) -->
-                <div id="routine-section" class="hidden space-y-6 animate-fade-in">
+                <!-- SECTION: ROUTINE -->
+                <div id="routine-section" class="hidden animate-fade-in">
                     <header class="border-b border-neutral-800 pb-4 mb-6">
-                        <h2 class="text-3xl font-bold text-white">Sugestão de Rotina</h2>
-                        <p class="text-neutral-400">Cronograma de prospecção diária.</p>
+                        <h2 class="text-3xl font-bold text-white">Rotina Sugerida</h2>
+                        <p class="text-neutral-400">Fluxo de trabalho para o Consignador.</p>
                     </header>
                     <div class="bg-neutral-900 p-8 rounded-xl border border-neutral-800 relative shadow-lg">
                         <div class="timeline-line ml-3 md:ml-0 md:left-8 bg-neutral-700"></div>
                         <div class="space-y-6 relative z-10">
-                            <!-- Template Item -->
                             <div class="flex flex-col md:flex-row gap-4 group">
                                 <div class="flex items-center gap-4 md:w-48 flex-shrink-0">
-                                    <div class="w-4 h-4 rounded-full bg-indigo-500 border-4 border-neutral-900 shadow-[0_0_10px_rgba(99,102,241,0.8)] ml-1 md:ml-6 z-10"></div>
-                                    <span class="font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-md text-sm">09:00 - 10:00</span>
+                                    <div class="w-4 h-4 rounded-full bg-indigo-500 border-4 border-neutral-900 z-10"></div>
+                                    <span class="font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-md text-sm">09:00 - 10:00</span>
                                 </div>
-                                <div class="bg-neutral-950 p-4 rounded-lg border border-neutral-800 flex-1 hover:border-indigo-500 transition hover:shadow-[0_0_15px_rgba(99,102,241,0.1)]">
-                                    <h4 class="font-bold text-white">Confirmar Agendamentos</h4>
-                                    <p class="text-sm text-neutral-400">Validar visitas do dia para garantir taxa de comparecimento.</p>
+                                <div class="bg-neutral-950 p-4 rounded-lg border border-neutral-800 flex-1">
+                                    <h4 class="font-bold text-white">Confirmar Agendamentos / Visitas</h4>
+                                    <p class="text-sm text-neutral-400">Validar compromissos do dia para evitar faltas.</p>
                                 </div>
                             </div>
                             <div class="flex flex-col md:flex-row gap-4 group">
                                 <div class="flex items-center gap-4 md:w-48 flex-shrink-0">
-                                    <div class="w-4 h-4 rounded-full bg-cyan-500 border-4 border-neutral-900 ml-1 md:ml-6 z-10"></div>
-                                    <span class="font-bold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-3 py-1 rounded-md text-sm">10:00 - 12:00</span>
+                                    <div class="w-4 h-4 rounded-full bg-cyan-500 border-4 border-neutral-900 z-10"></div>
+                                    <span class="font-bold text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-md text-sm">10:00 - 12:00</span>
                                 </div>
-                                <div class="bg-neutral-950 p-4 rounded-lg border border-neutral-800 flex-1 hover:border-cyan-500 transition">
+                                <div class="bg-neutral-950 p-4 rounded-lg border border-neutral-800 flex-1">
                                     <h4 class="font-bold text-white">Prospecção Ativa</h4>
-                                    <p class="text-sm text-neutral-400">Bloco focado em novos contratos de consignação.</p>
+                                    <p class="text-sm text-neutral-400">Bloco focado em ligações para captação de novos veículos.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SECTION: METRICS -->
-                <div id="metrics-section" class="hidden space-y-6 animate-fade-in">
+                <!-- SECTION: METRICS REGISTER -->
+                <div id="metrics-section" class="hidden animate-fade-in">
                     <header class="border-b border-neutral-800 pb-4 mb-6">
                         <h2 class="text-3xl font-bold text-white">Registro Diário</h2>
-                        <p class="text-neutral-400">Finalização do dia de trabalho.</p>
+                        <p class="text-neutral-400">Finalização do dia.</p>
                     </header>
                     <form id="metrics-form" class="bg-neutral-900 p-8 rounded-xl border border-neutral-800 grid grid-cols-1 md:grid-cols-2 gap-6 shadow-lg">
                         <div class="space-y-4">
-                            <h3 class="font-bold text-indigo-400 border-b border-neutral-700 pb-2 uppercase text-sm tracking-wide">Fase de Contacto</h3>
+                            <h3 class="font-bold text-indigo-400 border-b border-neutral-700 pb-2 uppercase text-sm">Prospecção</h3>
                             <div>
-                                <label class="block text-xs font-medium text-neutral-400 mb-1">Leads Totais</label>
-                                <input id="report-leads" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500" placeholder="0">
+                                <label class="block text-xs font-medium text-neutral-400 mb-1">Leads na Base</label>
+                                <input id="report-leads" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white" placeholder="0">
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-neutral-400 mb-1">Ligações Realizadas</label>
-                                <input id="report-calls" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500" placeholder="0">
+                                <label class="block text-xs font-medium text-neutral-400 mb-1">Ligações Efetuadas</label>
+                                <input id="report-calls" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white" placeholder="0">
                             </div>
                             <div>
-                                <label class="block text-xs font-medium text-neutral-400 mb-1">Contatos (Atendidos)</label>
-                                <input id="report-contacts" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-indigo-500" placeholder="0">
+                                <label class="block text-xs font-medium text-neutral-400 mb-1">Contatos Efetivos</label>
+                                <input id="report-contacts" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white" placeholder="0">
                             </div>
                         </div>
                         <div class="space-y-4">
-                            <h3 class="font-bold text-cyan-400 border-b border-neutral-700 pb-2 uppercase text-sm tracking-wide">Fase de Fechamento</h3>
+                            <h3 class="font-bold text-emerald-400 border-b border-neutral-700 pb-2 uppercase text-sm">Resultados</h3>
                             <div>
                                 <label class="block text-xs font-medium text-neutral-400 mb-1">Agendamentos Feitos</label>
-                                <input id="report-scheduled-visit" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white focus:border-cyan-500" placeholder="0">
+                                <input id="report-scheduled" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white" placeholder="0">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-neutral-400 mb-1">Visitas Concluídas</label>
+                                <input id="report-visits" type="number" class="w-full bg-neutral-950 border border-neutral-700 rounded-lg p-2.5 text-white" placeholder="0">
                             </div>
                              <div class="bg-indigo-900/20 p-3 rounded-md border border-indigo-900/40">
-                                <label class="block text-xs font-bold text-indigo-400 mb-1 uppercase">Contratos Consignados</label>
-                                <input id="report-sales" type="number" class="w-full bg-neutral-950 border border-indigo-800 rounded-lg p-2.5 text-white focus:border-indigo-500" placeholder="0">
+                                <label class="block text-xs font-bold text-indigo-400 mb-1">Consignações Fechadas</label>
+                                <input id="report-sales" type="number" class="w-full bg-neutral-950 border border-indigo-800 rounded-lg p-2.5 text-white" placeholder="0">
                             </div>
                         </div>
                         <div class="md:col-span-2 pt-4">
-                            <button type="button" onclick="generateReport()" class="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 text-white font-bold py-3 rounded-lg hover:from-indigo-500 transition shadow-lg shadow-indigo-900/50 flex items-center justify-center gap-2">
-                                <i class="fas fa-file-alt"></i> Gerar Relatório de Consignação
+                            <button type="button" onclick="generateReport()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-500 shadow-lg shadow-indigo-900/50 flex items-center justify-center gap-2">
+                                <i class="fas fa-file-alt"></i> Gerar Relatório Diário
                             </button>
                         </div>
                     </form>
@@ -293,10 +310,10 @@
     <div id="report-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 opacity-0 transition-opacity duration-300 backdrop-blur-sm">
         <div class="bg-neutral-900 rounded-xl border border-neutral-800 shadow-2xl p-6 w-full max-w-lg mx-4 transform transition-transform duration-300 scale-95">
             <h3 class="text-xl font-bold text-white mb-4">Relatório Diário Gerado</h3>
-            <textarea id="report-content" class="w-full h-64 p-4 bg-neutral-950 border border-neutral-800 rounded-lg font-mono text-sm mb-4 text-neutral-300 focus:outline-none focus:border-indigo-500" readonly></textarea>
+            <textarea id="report-content" class="w-full h-64 p-4 bg-neutral-950 border border-neutral-800 rounded-lg font-mono text-xs mb-4 text-neutral-300" readonly></textarea>
             <div class="flex gap-3">
-                <button onclick="closeReportModal()" class="flex-1 px-4 py-2 border border-neutral-700 text-neutral-400 rounded-lg hover:bg-neutral-800 transition">Fechar</button>
-                <button id="copy-btn" onclick="copyReport()" class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 font-bold shadow-lg shadow-indigo-500/20 transition">Copiar Relatório</button>
+                <button onclick="closeReportModal()" class="flex-1 px-4 py-2 border border-neutral-700 text-neutral-400 rounded-lg hover:bg-neutral-800">Fechar</button>
+                <button id="copy-btn" onclick="copyReport()" class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 font-bold">Copiar Relatório</button>
             </div>
         </div>
     </div>
@@ -305,64 +322,73 @@
         function switchTab(tabId) {
             ['dashboard', 'routine', 'metrics'].forEach(id => {
                 document.getElementById(id + '-section').classList.add('hidden');
-                document.getElementById('nav-' + id).classList.remove('bg-indigo-600', 'text-white', 'border', 'border-indigo-500', 'shadow-[0_0_15px_rgba(99,102,241,0.3)]');
+                document.getElementById('nav-' + id).classList.remove('bg-indigo-600', 'text-white', 'border', 'border-indigo-500');
                 document.getElementById('nav-' + id).classList.add('hover:bg-neutral-800', 'text-neutral-400');
             });
             document.getElementById(tabId + '-section').classList.remove('hidden');
             const activeBtn = document.getElementById('nav-' + tabId);
+            activeBtn.classList.add('bg-indigo-600', 'text-white', 'border', 'border-indigo-500');
             activeBtn.classList.remove('hover:bg-neutral-800', 'text-neutral-400');
-            activeBtn.classList.add('bg-indigo-600', 'text-white', 'border', 'border-indigo-500', 'shadow-[0_0_15px_rgba(99,102,241,0.3)]');
         }
 
-        const GOALS = { calls: 100, contacts: 33, scheduled: 5 };
-        Chart.defaults.color = '#a3a3a3';
-        Chart.defaults.borderColor = '#404040';
-
+        const GOALS = { calls: 100, contacts: 33, scheduled: 10, visits: 5 };
+        
         let conversionChartCtx = document.getElementById('conversionChart').getContext('2d');
         let conversionChart = new Chart(conversionChartCtx, {
             type: 'bar',
             data: {
-                labels: ['Ligação -> Atendido', 'Atendido -> Agenda'],
+                labels: ['Lig.->Cont.', 'Cont.->Ag.', 'Ag.->Vis.'],
                 datasets: [{
-                    label: 'Taxa Atual (%)',
-                    data: [0, 0],
-                    backgroundColor: ['#6366f1', '#22d3ee'],
+                    label: 'Eficiência %',
+                    data: [0, 0, 0],
+                    backgroundColor: ['#6366f1', '#22d3ee', '#10b981'],
                     borderRadius: 4
                 }, {
-                    label: 'Meta/Ref (%)',
-                    data: [33, 45],
+                    label: 'Meta %',
+                    data: [33, 30, 50],
                     type: 'line',
                     borderColor: '#a3a3a3',
                     borderDash: [5, 5],
-                    pointRadius: 4,
-                    borderWidth: 2
+                    pointRadius: 2,
+                    borderWidth: 1.5
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { legend: { display: false } },
+                scales: { 
+                    y: { beginAtZero: true, max: 100, grid: { color: '#262626' } },
+                    x: { grid: { display: false } }
+                } 
+            }
         });
 
         function updateDashboard() {
             const calls = parseInt(document.getElementById('input-calls').value) || 0;
             const contacts = parseInt(document.getElementById('input-contacts').value) || 0;
             const scheduled = parseInt(document.getElementById('input-scheduled').value) || 0;
+            const visits = parseInt(document.getElementById('input-visits').value) || 0;
 
             document.getElementById('display-calls').innerText = calls;
             document.getElementById('display-contacts').innerText = contacts;
             document.getElementById('display-scheduled').innerText = scheduled;
+            document.getElementById('display-visits').innerText = visits;
 
             document.getElementById('bar-calls').style.width = Math.min((calls / GOALS.calls) * 100, 100) + '%';
             document.getElementById('bar-contacts').style.width = Math.min((contacts / GOALS.contacts) * 100, 100) + '%';
             document.getElementById('bar-scheduled').style.width = Math.min((scheduled / GOALS.scheduled) * 100, 100) + '%';
+            document.getElementById('bar-visits').style.width = Math.min((visits / GOALS.visits) * 100, 100) + '%';
 
-            let rateContact = calls > 0 ? ((contacts / calls) * 100).toFixed(1) : 0;
-            let rateSchedule = contacts > 0 ? ((scheduled / contacts) * 100).toFixed(1) : 0;
+            let rateCont = calls > 0 ? ((contacts / calls) * 100).toFixed(1) : 0;
+            let rateSched = contacts > 0 ? ((scheduled / contacts) * 100).toFixed(1) : 0;
+            let rateVisit = scheduled > 0 ? ((visits / scheduled) * 100).toFixed(1) : 0;
 
-            document.getElementById('rate-contact').innerText = rateContact + '%';
-            document.getElementById('rate-schedule').innerText = rateSchedule + '%';
-            document.getElementById('prog-contact').style.width = Math.min(rateContact, 100) + '%';
-            document.getElementById('prog-schedule').style.width = Math.min(rateSchedule, 100) + '%';
+            document.getElementById('rate-contact').innerText = rateCont + '%';
+            document.getElementById('rate-schedule').innerText = rateSched + '%';
+            document.getElementById('rate-visit').innerText = rateVisit + '%';
 
-            conversionChart.data.datasets[0].data = [rateContact, rateSchedule];
+            conversionChart.data.datasets[0].data = [rateCont, rateSched, rateVisit];
             conversionChart.update();
         }
 
@@ -371,72 +397,45 @@
             const leads = document.getElementById('report-leads').value || '0';
             const calls = document.getElementById('report-calls').value || '0';
             const contacts = document.getElementById('report-contacts').value || '0';
-            const schedVisit = document.getElementById('report-scheduled-visit').value || '0';
+            const sched = document.getElementById('report-scheduled').value || '0';
+            const visits = document.getElementById('report-visits').value || '0';
             const sales = document.getElementById('report-sales').value || '0';
 
-            // Cálculo de Eficiência
-            let efficiency = "0%";
-            if (parseInt(calls) > 0) {
-                efficiency = ((parseInt(contacts) / parseInt(calls)) * 100).toFixed(1) + "%";
-            }
-
-            const reportText = `🔹 *RELATÓRIO DE CONSIGNAÇÃO - G30 AI*
+            const reportText = `🔹 *RELATÓRIO DIÁRIO - G30 AI*
 📅 Data: ${today}
 
-*ATIVIDADE DE PROSPECÇÃO*
+*ATIVIDADE*
 • Leads na Base: ${leads}
-• Ligações Efetuadas: ${calls}
-• Contatos Efetivos (Atendidos): ${contacts}
-• Taxa de Contato: ${efficiency}
+• Ligações: ${calls}
+• Contatos: ${contacts}
 
-*RESULTADOS DE HOJE*
-• Agendamentos Realizados: ${schedVisit}
-🏆 *CONTRATOS CONSIGNADOS:* ${sales}
+*RESULTADOS*
+• Agendamentos: ${sched}
+• Visitas Concluídas: ${visits}
+🏆 *CONSIGNADOS:* ${sales}
 
 --------------------------------
-_Gerado via Painel do Consignador G30_`;
+_Gerado via Painel do Consignador_`;
 
-            const modal = document.getElementById('report-modal');
             document.getElementById('report-content').value = reportText;
-            
+            const modal = document.getElementById('report-modal');
             modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modal.querySelector('div').classList.remove('scale-95');
-                modal.querySelector('div').classList.add('scale-100');
-            }, 10);
+            setTimeout(() => { modal.classList.remove('opacity-0'); }, 10);
             document.body.classList.add('modal-active');
         }
 
         function closeReportModal() {
             const modal = document.getElementById('report-modal');
             modal.classList.add('opacity-0');
-            modal.querySelector('div').classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.classList.remove('modal-active');
-                // Reset button text
-                document.getElementById('copy-btn').innerText = 'Copiar Relatório';
-            }, 300);
+            setTimeout(() => { modal.classList.add('hidden'); document.body.classList.remove('modal-active'); }, 300);
         }
 
         function copyReport() {
             const content = document.getElementById('report-content');
             content.select();
-            content.setSelectionRange(0, 99999); // Mobile
-            
-            try {
-                document.execCommand('copy');
-                const btn = document.getElementById('copy-btn');
-                btn.innerText = 'Copiado para o Clip!';
-                btn.classList.add('bg-green-600');
-                setTimeout(() => {
-                    btn.innerText = 'Copiar Relatório';
-                    btn.classList.remove('bg-green-600');
-                }, 2000);
-            } catch (err) {
-                console.error('Erro ao copiar');
-            }
+            document.execCommand('copy');
+            document.getElementById('copy-btn').innerText = 'Copiado!';
+            setTimeout(() => { document.getElementById('copy-btn').innerText = 'Copiar Relatório'; }, 2000);
         }
 
         window.onload = updateDashboard;
